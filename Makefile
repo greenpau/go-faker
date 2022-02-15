@@ -19,7 +19,7 @@ envvar:
 build: license
 	@mkdir -p bin/
 	@rm -rf ./bin/*
-	@versioned -sync ./main.go
+	@#versioned -sync ./main.go
 	@CGO_ENABLED=0 go build -o ./bin/faker $(VERBOSE) \
 		-ldflags="-w -s \
 		-X main.appVersion=$(APP_VERSION) \

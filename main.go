@@ -37,8 +37,8 @@ func init() {
 	app.Description = "Fake user data generator"
 	app.Documentation = "https://github.com/greenpau/go-faker/"
 	app.SetVersion(appVersion, "1.0.0")
-	app.SetGitBranch(gitBranch, "master")
-	app.SetGitCommit(gitCommit, "60b1fba")
+	app.SetGitBranch(gitBranch, "main")
+	app.SetGitCommit(gitCommit, "38832fa")
 	app.SetBuildUser(buildUser, "")
 	app.SetBuildDate(buildDate, "")
 
