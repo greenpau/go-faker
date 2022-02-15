@@ -10,8 +10,14 @@ domain `contoso.com`:
 faker --password foobar --domain=contoso.com user
 ```
 
-Create 10 different user with the same attributes:
+Create 10 different users with the same attributes:
 
 ```bash
 faker --password foobar --domain=contoso.com --count=10 user
+```
+
+Set several user roles, e.g. `foo` and `bar`:
+
+```
+faker --roles foo --roles bar user
 ```
