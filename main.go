@@ -36,9 +36,9 @@ func init() {
 	app = versioned.NewPackageManager("faker")
 	app.Description = "Fake user data generator"
 	app.Documentation = "https://github.com/greenpau/go-faker/"
-	app.SetVersion(appVersion, "1.0.0")
+	app.SetVersion(appVersion, "1.0.1")
 	app.SetGitBranch(gitBranch, "main")
-	app.SetGitCommit(gitCommit, "38832fa")
+	app.SetGitCommit(gitCommit, "2a68448")
 	app.SetBuildUser(buildUser, "")
 	app.SetBuildDate(buildDate, "")
 
