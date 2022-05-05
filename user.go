@@ -17,14 +17,18 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/greenpau/go-faker/pkg/persons"
-	"github.com/urfave/cli/v2"
 	"math/rand"
 	"os"
 	"strings"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/greenpau/go-faker/pkg/persons"
+	"github.com/urfave/cli/v2"
 )
 
 type User struct {
+	ID       string   `json:"id,omitempty" xml:"id,omitempty" yaml:"id,omitempty"`
 	Username string   `json:"username,omitempty" xml:"username,omitempty" yaml:"username,omitempty"`
 	Password string   `json:"password,omitempty" xml:"password,omitempty" yaml:"password,omitempty"`
 	Name     string   `json:"name,omitempty" xml:"name,omitempty" yaml:"name,omitempty"`
@@ -38,6 +42,7 @@ func NewUser(c *cli.Context) error {
 	password := c.String("password")
 	count := c.Int("count")
 	roles := c.StringSlice("roles")
+	emailAddrPrefix := c.String("email-prefix")
 
 	if count == 0 {
 		count++
@@ -45,12 +50,11 @@ func NewUser(c *cli.Context) error {
 	if domainName == "" {
 		domainName = "localdomain.local"
 	}
-	if password == "" {
-		password = "F0bar@123"
-	}
 
 	for i := 1; i <= count; i++ {
-		user := &User{}
+		user := &User{
+			ID: uuid.New().String(),
+		}
 		sex := randomSex()
 		firstName := strings.Title(strings.ToLower(randomFirstName(sex)))
 		lastName := strings.Title(strings.ToLower(randomLastName()))
@@ -58,6 +62,9 @@ func NewUser(c *cli.Context) error {
 		user.Username = generateUsername(lastName, firstName)
 		user.Password = password
 		user.Email = fmt.Sprintf("%s@%s", user.Username, domainName)
+		if emailAddrPrefix != "" {
+			user.Email = emailAddrPrefix + user.Email
+		}
 		user.Roles = roles
 
 		b, err := json.Marshal(user)
@@ -79,16 +86,16 @@ func randomSex() string {
 
 func randomFirstName(sex string) string {
 	if sex == "F" {
-		return randomFemaleFistName()
+		return randomFemaleFirstName()
 	}
-	return randomMaleFistName()
+	return randomMaleFirstName()
 }
 
-func randomFemaleFistName() string {
+func randomFemaleFirstName() string {
 	return randomString(persons.FemaleNames)
 }
 
-func randomMaleFistName() string {
+func randomMaleFirstName() string {
 	return randomString(persons.MaleNames)
 }
 
@@ -97,8 +104,9 @@ func randomLastName() string {
 }
 
 func randomString(arr []string) string {
+	rand.Seed(time.Now().UnixNano())
 	i := rand.Intn(len(arr))
-	return arr[i]
+	return string(arr[i])
 }
 
 func generateUsername(names ...string) string {

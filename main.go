@@ -16,8 +16,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/urfave/cli/v2"
 	"os"
+
+	"github.com/urfave/cli/v2"
 
 	"github.com/greenpau/versioned"
 )
@@ -54,14 +55,17 @@ func init() {
 	sh.HideHelp = false
 	sh.HideVersion = false
 	sh.Flags = append(sh.Flags, &cli.StringFlag{Name: "domain", Usage: "set email domain"})
-	sh.Flags = append(sh.Flags, &cli.StringFlag{Name: "password", Usage: "set password"})
 	sh.Flags = append(sh.Flags, &cli.IntFlag{Name: "count", Usage: "set user count", Value: 1})
-	sh.Flags = append(sh.Flags, &cli.StringSliceFlag{Name: "roles", Usage: "set user roles", Value: cli.NewStringSlice("authp/user")})
 	sh.Commands = []*cli.Command{
 		{
 			Name:   "user",
 			Usage:  "generate user",
 			Action: NewUser,
+			Flags: []cli.Flag{
+				&cli.StringFlag{Name: "password", Usage: "set password"},
+				&cli.StringFlag{Name: "email-prefix", Usage: "set email address prefix"},
+				&cli.StringSliceFlag{Name: "roles", Usage: "set user roles", Value: cli.NewStringSlice("viewer")},
+			},
 		},
 	}
 }
